@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage("SCM Checkout"){
             steps{
-                checkout scmGit(branches: [[name: "**"]], extensions: [], userRemoteConfigs: [[credentialsId: "${SSHKEY}", url: "${REPO}"]])
+                git branch: "kanat", credentialsId: "sshkey", url: "git@github.com:seytech-devops/jenkins.git"
             }
         }
         stage("Change directory"){

@@ -3,23 +3,13 @@ pipeline {
 
     // global environments
     environment {
-        REPO="git@github.com:seytech-devops/terraform-ansible-aws.git"
-        SSHKEY="sshkey"
-    }
-
-    options {
-        buildDiscarder logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "7", numToKeepStr: "5")
-    }
-
-    parameters {
-        string(name: "BRANCH_NAME", defaultValue:"", description: "The Git Branch name to build from")
-        choice choices: ["init", "plan", "apply", "destroy"], description: "The terraform options to apply to", name: "TFCHOICE"
+        REPO="git@github.com:seytech-devops/jenkins.git"
     }
     
     stages {
         stage("SCM Checkout"){
             steps{
-                git branch: "kanat", credentialsId: "sshkey", url: "git@github.com:seytech-devops/jenkins.git"
+                git branch: "ilnura", credentialsId: "sshkey", url: "${env.REPO}"
             }
         }
         stage("Change directory"){

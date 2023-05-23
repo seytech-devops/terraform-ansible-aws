@@ -7,7 +7,7 @@ pipeline {
     }
 
     parameters {
-        string(name:BRANCH_NAME, defaultValue:"", description: "The Git Branch name to build from")
+        string(name: "BRANCH_NAME", defaultValue:"", description: "The Git Branch name to build from")
     }
     
     stages {

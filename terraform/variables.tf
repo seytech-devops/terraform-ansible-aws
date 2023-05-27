@@ -3,3 +3,9 @@ variable "create_ec2" {
   type        = bool
   default     = true
 }
+
+variable "instance_type" {
+  description = "EC2 istance type"
+  type        = string
+  default     = "t3a.small"
+}

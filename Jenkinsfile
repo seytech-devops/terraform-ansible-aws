@@ -1,6 +1,7 @@
 pipeline {
     agent any
 
+    // global environments
     environment {
         REPO="git@github.com:seytech-devops/terraform-ansible-aws.git"
         SSHKEY="sshkey"
@@ -12,14 +13,10 @@ pipeline {
 
     parameters {
         string(name: "BRANCH_NAME", defaultValue:"", description: "The Git Branch name to build from")
+        choice choices: ["init", "plan", "apply", "destroy"], description: "The terraform options to apply to", name: "TFCHOICE"
     }
     
     stages {
-        // stage("Code Checkout"){
-        //     steps{
-        //         git branch: "${params.BRANCH_NAME}", credentialsId: "${SSHKEY}", url: "${env.REPO}"
-        //     }
-        // }
         stage("SCM Checkout"){
             steps{
                 checkout scmGit(branches: [[name: "**"]], extensions: [], userRemoteConfigs: [[credentialsId: "${SSHKEY}", url: "${REPO}"]])
@@ -48,7 +45,25 @@ pipeline {
                 """
             }
         }
-        stage("Ckean Workspace"){
+        stage("Terraform apply"){
+            when {
+                beforeInput true 
+                expression {
+                    return (params.TFCHOICE == "apply" || params.TFCHOICE == "destroy")
+                }
+            }
+            steps {
+                script {
+                    env.SELECTED_CHOICE = input message: "Please approve", ok: "deploy", parameters: [choice(choices: ["--auto-approve", "no"], description: "Approve or Cancel", name: "SELECTED_CHOICE")], submitter: "casesuroo"
+                }
+                echo "${env.SELECTED_CHOICE}"
+                sh """
+                cd ${WORKSPACE}/terraform
+                terraform ${params.TFCHOICE}  -no-color  ${env.SELECTED_CHOICE}
+                """
+            }
+        }
+        stage("Clean Workspace"){
             steps{
                 cleanWs()
             }

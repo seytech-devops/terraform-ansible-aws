@@ -1,16 +1,16 @@
 
 resource "aws_instance" "app" {
   count         = var.create_ec2 ? 1 : 0
-  ami           = data.aws_ami.amazon_ami.id
-  instance_type = "t2.micro"
+  ami           = "ami-0715c1897453cabd1"
+  instance_type = var.instance_type
 
   tags = local.common_tags
 }
 
 resource "aws_instance" "web" {
   count         = var.create_ec2 ? 1 : 0
-  ami           = data.aws_ami.ubuntu_ami.id
-  instance_type = "t2.micro"
+  ami           = "ami-053b0d53c279acc90 "
+  instance_type = var.instance_type
 
   tags = local.common_tags
 }
@@ -22,10 +22,10 @@ locals {
 resource "aws_instance" "example" {
   # count = terraform.workspace == "default" ? 1 : 2
 
-  ami           = data.aws_ami.amazon_ami.id
-  instance_type = "t2.micro"
+  ami           = "ami-0715c1897453cabd1"
+  instance_type = var.instance_type
 
-    provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "echo 'Destroy-time provisioner'"
   }
 

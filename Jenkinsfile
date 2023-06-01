@@ -1,6 +1,7 @@
 pipeline {
     agent any
 
+    // global environments
     environment {
         REPO="git@github.com:seytech-devops/terraform-ansible-aws.git"
         SSHKEY="sshkey"
@@ -23,8 +24,11 @@ pipeline {
         }
         stage("Change directory"){
             steps{
-                sh "cd ${WORKSPACE}"
-                sh "pwd"
+                sh """
+                cd ${WORKSPACE}
+                pwd
+                whoami
+                """
             }
         }
         stage("Terraform init"){

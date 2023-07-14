@@ -1,0 +1,54 @@
+# Jenkinsfile is a control of pipeline as a code. 
+
+# groovy/java function 
+
+
+// pipeline:
+//   agent:
+//     any:
+//   stages:
+//     - stage: "Build"
+//       steps:
+//         - echo "Hello Kanat"
+//     - stage: "Test"
+//       steps:
+//         - echo "Testing ..."
+
+
+//  Declarative Pipeline 
+pipeline {
+  environment { 
+        CC = 'clang'
+    }
+  options {
+        timeout(time: 1, unit: 'HOURS') 
+    }
+
+  stages {
+    stage("Build Linux Image"){
+      any linux
+      steps { 
+        echo "Hello Kanat"
+      }
+    }
+    stage("Build Windows Image"){
+      agent windows
+      steps{
+        echo "Testing ..."
+      }
+    }
+  }
+}
+
+//  Scripted Pipeline
+node {  
+    stage('Build') { 
+        // 
+    }
+    stage('Test') { 
+        // 
+    }
+    stage('Deploy') { 
+        // 
+    }
+}

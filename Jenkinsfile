@@ -23,6 +23,9 @@ pipeline {
             }
         }
         stage("Change directory"){
+            environment {
+                NAME="Kanat"
+            }
             steps{
                 sh """
                 cd ${WORKSPACE}
